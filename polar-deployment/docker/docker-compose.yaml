@@ -1,17 +1,11 @@
 services:
-  catalog-service:
-    image: ghcr.io/shythm/catalog-service
-    container_name: catalog-service
+  polar-postgres:
+    image: "postgres:14.4"
+    container_name: "polar-postgres"
     ports:
-      - 9001:9001
-      - 8001:8001
+      - 5432:5432
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
-      - SPRING_PROFILES_ACTIVE=testdata
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-
-  config-service:
-    image: ghcr.io/shythm/config-service
-    container_name: config-service
-    ports:
-      - 8888:8888
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
